@@ -6,11 +6,11 @@ variable "bucket_key_prefix" {
 
 
 variable "sns_topic_arn" {
-  default = "" 
+  default = "arn:aws:sns:us-east-1:889796695136:aws-sns-push" 
 }
 
 variable "bucket_name" {
-  default = "awsss-config"
+  default = "awsconfig-storage"
 }
 
 

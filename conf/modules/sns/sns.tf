@@ -9,30 +9,50 @@ resource "aws_sns_topic_subscription" "email-target" {
   endpoint  = "praveenpravo08@gmail.com"
 }
 
-data "aws_iam_policy_document" "iam_policy" {
-  statement {
-    effect    = "Allow"
-    actions   = ["SNS:Publish"]
-    resources = [aws_sns_topic.config.arn]
-    principals {
-      type        = "Service"
-      identifiers = ["config.amazonaws.com"]
-    }
-    Action = "sns:Publish",
-      Resource = "arn:aws:sns:region:account-id:myTopic",
-        Condition = {
-        StringEquals = {
-          AWS:SourceAccount = [
-           "889796695136",
-  ]
-}
-}
-}
-}
 
 
 resource "aws_sns_topic_policy" "topic_policy" {
   arn    = aws_sns_topic.config.arn
-  policy = data.aws_iam_policy_document.iam_policy.json
+  policy = data.aws_iam_policy_document.my_custom_sns_policy_document.json
+}
+
+data "aws_iam_policy_document" "my_custom_sns_policy_document" {
+  policy_id = "__default_policy_ID"
+
+  statement {
+    actions = [
+      "SNS:Subscribe",
+      "SNS:SetTopicAttributes",
+      "SNS:RemovePermission",
+      "SNS:Receive",
+      "SNS:Publish",
+      "SNS:ListSubscriptionsByTopic",
+      "SNS:GetTopicAttributes",
+      "SNS:DeleteTopic",
+      "SNS:AddPermission",
+    ]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceOwner"
+
+      values = [
+        889796695136,
+      ]
+    }
+
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["*"]
+    }
+
+    resources = [
+      aws_sns_topic.config.arn,
+    ]
+
+    sid = "__default_statement_ID"
+  }
 }
 

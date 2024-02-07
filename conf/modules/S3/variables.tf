@@ -11,7 +11,7 @@ variable "bucket_key_prefix" {
 }
 
 variable "bucket_name" {
-  default = "awsss-config"
+  default = "awsconfig-storage"
 }
 
 
