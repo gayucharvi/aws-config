@@ -37,7 +37,7 @@ data "aws_iam_policy_document" "my_custom_sns_policy_document" {
       variable = "AWS:SourceOwner"
 
       values = [
-        889796695136,
+        ,
       ]
     }
 
